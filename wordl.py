@@ -1,18 +1,6 @@
 import json
 from random import choice
 
-'''
-orstr = "cem"
-indices  = [0,3]
-newLet = "*"
-orstr = list(orstr)
-for i in indices :
-    if 0 <= len(indices)  < len(orstr):
-        orstr[i] = newLet
-orstr = ''.join(orstr)
-print(orstr)
-'''
-
 theletterto = "*"
 
 def GuessTheLetter():
@@ -24,14 +12,68 @@ def GuessTheLetter():
         else:
             return letter
 
-def ChangeLetter(indices, lettertochangeto, wordtobechanged):
+def ChangeLetter(indices, lettertochangeto, wordtobechanged, word):
     wordtobechanged = list(wordtobechanged)
+    word = list(word)
     for index in indices:
-        wordtobechanged[index] = lettertochangeto
+        word[index] = wordtobechanged[index]
     wordtobechanged = ''.join(wordtobechanged)
-    print(wordtobechanged)
-    return wordtobechanged
-    
+    word= ''.join(word)
+    print(word)
+    return word
+
+
+
+def Encrypt(word):
+    word = list(word)
+    for i in range(len(word)):
+        word[i] = '_'
+    word = ''.join(word)
+    return word
+
+def TheGame(letter):
+    with open("words.json", "r") as f:
+            words_data = json.load(f)
+            the_hidden_word = choice(words_data["data"])
+    word = Encrypt(the_hidden_word)
+    print(word)        
+    #print(the_hidden_word)   #Remove "#" in order to cheat
+    while(not any(char == "_" for char in the_hidden_word)):
+        
+        letter = GuessTheLetter()
+        positions = []
+        for i, char in enumerate(the_hidden_word):
+            if char == letter:
+                positions.append(i)
+            
+        if letter in the_hidden_word:
+            print("it is valid")
+            print(f"the letter is the {positions}. character")
+      
+            word = ChangeLetter(positions, theletterto, the_hidden_word, word)
+            
+            if not any(char == "_" for char in word):
+                print("congrulations!")
+                TheGame(None)
+            continue
+            
+        else:
+            print("No")
+            print(word)
+            continue
+
+
+
+
+def Main():
+    TheGame(None)    
+
+
+if __name__ == "__main__":
+    Main()
+
+
+'''
 
 def TheGame(letter):
     with open("words.json", "r") as f:
@@ -58,37 +100,11 @@ def TheGame(letter):
             continue
             
         else:
-            print("You are now my pet")
+            print("No")
             break
-    
 
 
 
-'''
-def TheGame(letter):
-    with open("words.json", "r") as f:
-        words_data = json.load(f)
-    the_hidden_word = choice(words_data["data"])
-    print(the_hidden_word)
-    letter = GuessTheLetter()
-    positions = []
-    for i, char in enumerate(the_hidden_word):
-            if char == letter:
-                positions.append(i)
-            
-    if letter in the_hidden_word:
-        print("it is valid")
-        print(f"the letter is the {positions}. character")
-      
-        ChangeLetter(positions, theletterto, the_hidden_word)
-        if all(char == "*" for char in the_hidden_word):
-            print("congrulations!")
-            TheGame(None)
-        GuessTheLetter()
-    else:
-        print("I WILL EAT YOUR SOUL")
-        GuessTheLetter()
-'''
 
 def Main():
     TheGame(None)    
@@ -96,3 +112,5 @@ def Main():
 
 if __name__ == "__main__":
     Main()
+
+    '''
