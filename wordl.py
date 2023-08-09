@@ -58,8 +58,8 @@ def TheGame(letter):
             continue
             
         else:
-            print("I WILL EAT YOUR SOUL")
-            continue
+            print("You are now my pet")
+            break
     
 
 
